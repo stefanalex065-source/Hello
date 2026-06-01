@@ -150,6 +150,28 @@
   }
 
   .hidden { display: none !important; }
+
+  #beauty-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 40;
+    display: none;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+  }
+  #beauty-container.show {
+    opacity: 1;
+  }
+  #beauty-img {
+    width: min(80vw, 480px);
+    height: min(80vh, 640px);
+    object-fit: cover;
+    border-radius: 16px;
+    box-shadow: 0 0 60px rgba(255, 100, 180, 0.8), 0 0 120px rgba(255, 100, 180, 0.4), 0 8px 32px rgba(0,0,0,0.8);
+    border: 3px solid rgba(255, 180, 220, 0.6);
+  }
 </style>
 </head>
 <body>
@@ -168,6 +190,10 @@
   <span class="letter" style="color:#44ff88; --grow-dur:2.5s; --delay:0.6s;">六</span>
   <span class="letter" style="color:#44ccff; --grow-dur:2.5s; --delay:0.9s;">六</span>
   <span class="letter" style="color:#ff88ff; --grow-dur:2.5s; --delay:1.2s;">六</span>
+</div>
+
+<div id="beauty-container">
+  <img id="beauty-img" src="https://picsum.photos/seed/beauty/480/640" alt="美女" />
 </div>
 
 <canvas id="fw-canvas" style="position:fixed;top:0;left:0;pointer-events:none;z-index:25;"></canvas>
@@ -291,6 +317,15 @@
     setTimeout(() => {
       textContainer.style.display = 'block';
     }, 300);
+
+    // show beauty image after all letters finish (0.3s + last delay 1.2s + duration 2.5s + buffer 0.3s)
+    const beautyContainer = document.getElementById('beauty-container');
+    setTimeout(() => {
+      beautyContainer.style.display = 'block';
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        beautyContainer.classList.add('show');
+      }));
+    }, 4300);
   });
 </script>
 </body>
